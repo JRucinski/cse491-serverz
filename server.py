@@ -22,6 +22,8 @@ while True:
     #send a response
     c.send('HTTP/1.0 200 OK\r\n')
     c.send('Content-type: text/html\r\n')
-    c.send('<h1>Hello, world.')
+    c.send('\r\n')
+    # @rucins11 ^ I added this line to indicate done with metadata
+    c.send('<h1>Hello, world.</h1>')  # @rucins11 Added </h1> to end header
     c.send('This is ctb\'s Web server.')
     c.close()
