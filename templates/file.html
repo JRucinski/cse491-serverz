@@ -1,8 +1,11 @@
 {% extends "base.html" %}
-
 {% block content %}
-
-<h1>File Page</h1>
-Files
-
-{% endblock  %}
+    <h1>File Page</h1>
+    This page contains file lists.<br />
+    <ul>
+{% for name in names %}
+    <a href='/text/{{ name }}'>{{ name }}<br>
+{% endfor %}
+    </ul>
+    <a href="/">Home</a>
+{% endblock %}
