@@ -39,3 +39,13 @@
     python server.py
  * tests were not update, don't even bother about checking those
 
+2014-4-3 Justin Rucinski <rucins11@msu.edu>
+
+ * Completed hw10. in imageapp
+ * Added account login,creation,authentication.
+   * Checks for proper login info.
+   * Checks if user already logged in.
+   * Logout feature added
+ * Added image comment functionality under most recent image
+   * If user logged in shows user name, otherwise shows anonymous
+
