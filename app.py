@@ -37,8 +37,10 @@ class MyApp(object):
                    '/file'          : self.File,
                    '/image'         : self.Image,
                    '/thumb'   : self.image_thumb,
-                   '/form'          : self.form,
-                   '/submit'        : self.submit  }
+                   '/login'          : self.login,
+                   '/createlogin'    :self.createlogin,
+                   '/submitlogin'        : self.submitlogin,
+                   '/submitcreate'  :self.submitcreate}
 
         path = environ['PATH_INFO']
         if path[:5] == '/text':
@@ -79,26 +81,45 @@ class MyApp(object):
         params = dict(names=get_contents('images'))
         return render_page('thumb.html', params)
 
-    def form(self, environ, start_response):
+    def login(self, environ, start_response):
         start_response('200 OK', [('Content-type', 'text/html')])
-        return render_page('form.html','')
+        return render_page('login.html','')
 
-    def submit(self, environ, start_response):
+    def createlogin(self, environ, start_response):
+        start_response('200 OK', [('Content-type', 'text/html')])
+        return render_page('createlogin.html','')
+
+    def submitlogin(self, environ, start_response):
         method = environ['REQUEST_METHOD']
         if method == 'GET':
-            return self.handle_get(environ, start_response)
+            return self.handle_getlogin(environ, start_response)
         else:
             return self.handle_post(environ, start_response)
 
-    def handle_get(self, environ, start_response):
+    def submitcreate(self, environ, start_response):
+        method = environ['REQUEST_METHOD']
+        if method == 'GET':
+            return self.handle_getcreate(environ, start_response)
+        else:
+            return self.handle_post(environ, start_response)
+
+    def handle_getlogin(self, environ, start_response):
         start_response('200 OK', [('Content-type', 'text/html')])
         params = parse_qs(environ['QUERY_STRING'])
-        return render_page('submit.html', params)
+        return render_page('submitlogin.html', params)
+
+    def handle_getcreate(self, environ, start_response):
+        start_response('200 OK', [('Content-type', 'text/html')])
+        params = parse_qs(environ['QUERY_STRING'])
+        print params
+        return render_page('submitcreate.html', params)
+
 
     def handle_post(self, environ, start_response):
         con_type = environ['CONTENT_TYPE']
         headers = {}
-        params ={} 
+        params ={}
+        print 'POSTING'
         for k, v in environ.iteritems():
             headers['content-type'] = environ['CONTENT_TYPE']
             headers['content-length'] = environ['CONTENT_LENGTH']
@@ -106,7 +127,7 @@ class MyApp(object):
                                   headers=headers, environ=environ)
             params.update({x: [fs[x].value] for x in fs.keys()}) 
         start_response('200 OK', [('Content-type', con_type)])
-        return render_page('submit.html', params)
+        return render_page('submitcreate.html', params)
 
     def text(self, environ, start_response):
         start_response('200 OK', [('Content-type', 'text/plain')])
