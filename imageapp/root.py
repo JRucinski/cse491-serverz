@@ -33,10 +33,11 @@ class RootDirectory(Directory):
         print request.form.keys()
 
         the_file = request.form['file']
+        print the_file
         filetype = the_file.orig_filename.split('.')[1]
         if(filetype == 'tif' or filetype == 'tiff'):
             filetype = 'tiff'
-        elif(filetype == 'jepg' or filetype == 'jpg'):
+        elif(filetype == 'jpeg' or filetype == 'jpg'):
             filetype == 'jpg'
         else:
             filetype == 'png'
@@ -61,8 +62,8 @@ class RootDirectory(Directory):
             img = image.get_image(int(request.form['num']))
         except KeyError:
             img = image.get_latest_image()
-        response.set_content_type('image/%s' % img[1])
-        return img[0]
+        #response.set_content_type('image/%s' % img[1])
+        return img
 
     @export(name = 'image_list')
     def image_list(self):
