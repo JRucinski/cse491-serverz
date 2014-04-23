@@ -7,22 +7,21 @@ import StringIO
 import quixote
 import imageapp
 import argparse
+import quotes
+import chat
 
-from quotes import apps as quotesapp
-from chat import apps as chatapp
 from app import make_app
+from cookieapp import make_cookie_app
 from quixote.demo import create_publisher
-# from quixote.demo.mini_demo import create_publisher
+# from quixote.demon.mini_demo import create_publisher
 # from quixote.demo.altdemo import create_publisher
-# from wsgiref.validate import validator
-
+# from wsgiref.validate import validator           
 def main():
+    s = socket.socket() # Create a socket object.
+    host = socket.getfqdn() # Get local machine name.
 
-    s = socket.socket()         # Create a socket object
-    host = socket.getfqdn() # Get local machine name
-    
     parser = argparse.ArgumentParser() #creating a parser 
-    parser.add_argument("-A", choices=['image', 'altdemo', 'myapp', 'quotes', 'chat'],
+    parser.add_argument("-A", choices=['image', 'altdemo', 'myapp', 'quotes', 'chat', 'cookie'],
             help='Choose which app you would like to run')
     parser.add_argument("-p", type=int, help="Choose the port you would like to run on.")
     args = parser.parse_args()
@@ -30,10 +29,10 @@ def main():
     #Check to see if a port is specified
     if args.p == None:
         port = random.randint(8000, 9999) #Creating WSGI app
-        s.bind((host, port))        # Bind to the port
+        s.bind((host, port))
     else:
         port = args.p
-        s.bind((host, port))        # Bind to the port
+        s.bind((host, port))
     if args.A == 'myapp':
         wsgi_app = make_app()
     elif args.A == "image":
@@ -44,9 +43,12 @@ def main():
         p = create_publisher()
         wsgi_app = quixote.get_wsgi_app()
     elif args.A == "quotes":
-        wsgi_app = quotesapp.QuotesApp('quotes/quotes.txt','./quotes/html')
+        directory_path = './quotes/'
+        wsgi_app = quotes.create_quotes_app(directory_path + 'quotes.txt', directory_path + 'html')
     elif args.A == "chat":
-        wsgi_app = chatapp.ChatApp('./chat/html')
+        wsgi_app = chat.create_chat_app('./chat/html')
+    elif args.A == "cookie":
+        wsgi_app = make_cookie_app()
     else:
         wsgi_app = make_app() #In the event that no argument is passed just make my_app
 
@@ -96,7 +98,10 @@ def handle_connection(conn, wsgi_app):
     url = urlparse.urlparse(request.splitlines()[0].split(' ')[1])
     environ['PATH_INFO'] = url.path
     environ['QUERY_STRING'] = url.query
-    environ['CONTENT_TYPE'] = headers.get('content-type', '')
+    try:
+        environ['CONTENT_TYPE'] = headers.get('content-type', '')
+    except:
+        pass
     environ['CONTENT_LENGTH'] = headers.get('content-length', '')
     environ['wsgi.input'] = StringIO.StringIO(message)
     # Used by Quixote apps.

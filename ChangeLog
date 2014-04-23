@@ -49,3 +49,17 @@
  * Added image comment functionality under most recent image
    * If user logged in shows user name, otherwise shows anonymous
 
+2014-4-10 Justin Rucinski <rucins11@msu.edu>
+ * Added cookies to wsgi server
+ * Added sqlite database to imageapp
+ * Added scoring of images
+ * Scoring of images and commenting now stored in database as well
+
+ * Note when first running app an exception error occurs until you upload your
+ first image to the database (program still runs)
+
+ 2014-4-17 Justin Rucinski <rucins11@msu.edu>
+ * Completed hw12
+ * Added oswd templates to imageapp (borrowed Cameron Kieff's .css file)
+ * Added ajax image uploading to upload2
+ * Added links to home page from all sub pages
