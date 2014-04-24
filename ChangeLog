@@ -63,3 +63,11 @@
  * Added oswd templates to imageapp (borrowed Cameron Kieff's .css file)
  * Added ajax image uploading to upload2
  * Added links to home page from all sub pages
+
+ 2014-4-24 Justin Rucinski <rucins11@msu.edu>
+ * Completed hw13
+ * Added image metadata (image description and filename stored)
+   *Upload allows for image description which displays below image
+   *Not adding description displays "No Description"
+ * Images referenced by numbers in URL /image?num=(?) (?)=imagenumber
+   *Most recent image doesn't link to latest imagenum though
